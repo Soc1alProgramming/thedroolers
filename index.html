@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Droolers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Special+Elite&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --burnt-orange: #C4541A;
+    --mustard: #D4A017;
+    --deep-plum: #2A0A2E;
+    --acid-green: #7AB648;
+    --warm-cream: #F2E8D5;
+    --rust: #8B2500;
+    --teal: #2A6B72;
+    --lavender: #9B72CF;
+    --ink: #1A0A0A;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--deep-plum);
+    color: var(--warm-cream);
+    font-family: 'Special Elite', cursive;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.08'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+    mix-blend-mode: overlay;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 3rem;
+    background: linear-gradient(180deg, rgba(26,10,10,0.97) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(212,160,23,0.2);
+  }
+
+  .nav-logo {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 1.1rem;
+    color: var(--mustard);
+    letter-spacing: 0.2em;
+    text-shadow: 0 0 20px rgba(212,160,23,0.5);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    font-size: 0.7rem;
+    color: var(--warm-cream);
+    text-decoration: none;
+    transition: color 0.3s, text-shadow 0.3s;
+  }
+
+  .nav-links a:hover {
+    color: var(--mustard);
+    text-shadow: 0 0 12px rgba(212,160,23,0.8);
+  }
+
+  /* SECTIONS */
+  section {
+    min-height: 100vh;
+    padding: 6rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* ===== HOME ===== */
+  #home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center, #3D1A4A 0%, #1A0A1E 50%, #0A0A0A 100%);
+    text-align: center;
+    padding-top: 0;
+  }
+
+  /* Concentric rings */
+  #home::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 900px; height: 900px;
+    border-radius: 50%;
+    background: transparent;
+    box-shadow:
+      0 0 0 1px rgba(155,114,207,0.1),
+      0 0 0 80px rgba(155,114,207,0.04),
+      0 0 0 160px rgba(155,114,207,0.03),
+      0 0 0 240px rgba(155,114,207,0.02),
+      0 0 0 320px rgba(155,114,207,0.015),
+      0 0 0 400px rgba(155,114,207,0.01);
+    pointer-events: none;
+    animation: pulse-rings 6s ease-in-out infinite;
+  }
+
+  @keyframes pulse-rings {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
+  }
+
+  .band-photo-container {
+    position: relative;
+    width: 420px;
+    height: 420px;
+    margin-bottom: 3rem;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+
+  .band-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(ellipse at 30% 40%, rgba(196,84,26,0.6) 0%, transparent 50%),
+      radial-gradient(ellipse at 70% 60%, rgba(155,114,207,0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(42,107,114,0.6) 0%, transparent 40%),
+      linear-gradient(135deg, #1A0A1E 0%, #2A0A2E 50%, #0F1A0A 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .band-photo-placeholder::after {
+    content: '☽ ☀ ☾';
+    font-size: 3rem;
+    letter-spacing: 1rem;
+    opacity: 0.3;
+    color: var(--mustard);
+  }
+
+  .band-photo-ring {
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 2px solid var(--mustard);
+    box-shadow: 
+      0 0 30px rgba(212,160,23,0.4),
+      inset 0 0 30px rgba(212,160,23,0.1);
+    animation: spin-slow 30s linear infinite;
+  }
+
+  .band-photo-ring::before {
+    content: '◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆';
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: 3.2em;
+    font-size: 0.5rem;
+    color: var(--mustard);
+    white-space: nowrap;
+  }
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .band-logo {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    color: var(--mustard);
+    line-height: 0.9;
+    letter-spacing: 0.05em;
+    text-shadow: 
+      4px 4px 0 var(--rust),
+      0 0 60px rgba(212,160,23,0.4),
+      0 0 120px rgba(212,160,23,0.2);
+    animation: flicker 8s ease-in-out infinite;
+    margin-bottom: 0.5rem;
+  }
+
+  @keyframes flicker {
+    0%, 95%, 100% { opacity: 1; }
+    96% { opacity: 0.85; }
+    97% { opacity: 1; }
+    98% { opacity: 0.9; }
+  }
+
+  .band-tagline {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.6em;
+    font-size: 0.75rem;
+    color: rgba(242,232,213,0.6);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    opacity: 0.4;
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(6px); }
+  }
+
+  /* SECTION DIVIDERS */
+  .section-divider {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--mustard), var(--burnt-orange), var(--mustard), transparent);
+    margin: 2rem 0;
+    opacity: 0.5;
+  }
+
+  /* SECTION HEADERS */
+  .section-header {
+    text-align: center;
+    margin-bottom: 4rem;
+    position: relative;
+  }
+
+  .section-header h2 {
+    font-family: 'Abril Fatface', serif;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--mustard);
+    text-shadow: 3px 3px 0 var(--rust), 0 0 40px rgba(212,160,23,0.3);
+    line-height: 1;
+  }
+
+  .section-header .subtitle {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.5em;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.5);
+    margin-top: 0.5rem;
+  }
+
+  /* ===== MUSIC ===== */
+  #music {
+    background: 
+      radial-gradient(ellipse at top right, rgba(196,84,26,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse at bottom left, rgba(122,182,72,0.1) 0%, transparent 60%),
+      linear-gradient(180deg, #0F0A1A 0%, #1A0F0A 100%);
+  }
+
+  .music-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .track-card {
+    background: rgba(242,232,213,0.04);
+    border: 1px solid rgba(212,160,23,0.2);
+    border-radius: 2px;
+    padding: 2rem;
+    position: relative;
+    transition: border-color 0.3s, background 0.3s;
+    overflow: hidden;
+  }
+
+  .track-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 4px; height: 100%;
+    background: linear-gradient(180deg, var(--mustard), var(--burnt-orange));
+  }
+
+  .track-card:hover {
+    border-color: rgba(212,160,23,0.5);
+    background: rgba(242,232,213,0.06);
+  }
+
+  .track-number {
+    font-family: 'Abril Fatface', serif;
+    font-size: 3rem;
+    color: rgba(212,160,23,0.15);
+    position: absolute;
+    top: 1rem; right: 1.5rem;
+    line-height: 1;
+  }
+
+  .track-title {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 1.2rem;
+    color: var(--warm-cream);
+    margin-bottom: 0.3rem;
+  }
+
+  .track-album {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.7rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.4);
+    margin-bottom: 1.5rem;
+  }
+
+  .audio-player {
+    background: rgba(0,0,0,0.3);
+    border-radius: 2px;
+    padding: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .play-btn {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    border: 1px solid var(--mustard);
+    background: transparent;
+    color: var(--mustard);
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .play-btn:hover {
+    background: var(--mustard);
+    color: var(--ink);
+  }
+
+  .waveform {
+    flex: 1;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  .waveform-bar {
+    width: 3px;
+    background: rgba(212,160,23,0.4);
+    border-radius: 1px;
+    animation: wave 1.5s ease-in-out infinite;
+  }
+
+  .waveform-bar:nth-child(odd) { animation-delay: 0.2s; }
+  .waveform-bar:nth-child(3n) { animation-delay: 0.4s; }
+
+  @keyframes wave {
+    0%, 100% { transform: scaleY(0.3); }
+    50% { transform: scaleY(1); }
+  }
+
+  .stream-links {
+    display: flex;
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .stream-btn {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 300;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    border: 1px solid currentColor;
+    text-decoration: none;
+    border-radius: 1px;
+    transition: all 0.3s;
+    display: inline-block;
+  }
+
+  .stream-btn.spotify { color: #1DB954; }
+  .stream-btn.apple { color: #FC3C44; }
+  .stream-btn.bandcamp { color: var(--mustard); }
+
+  .stream-btn:hover {
+    background: currentColor;
+    color: var(--ink);
+  }
+
+  /* ===== SHOWS ===== */
+  #shows {
+    background:
+      radial-gradient(ellipse at center top, rgba(155,114,207,0.15) 0%, transparent 60%),
+      linear-gradient(180deg, #0A1A0F 0%, #1A0A2E 100%);
+  }
+
+  .shows-list {
+    max-width: 800px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .show-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    align-items: center;
+    gap: 2rem;
+    padding: 1.5rem 2rem;
+    border: 1px solid rgba(155,114,207,0.2);
+    background: rgba(155,114,207,0.04);
+    position: relative;
+    transition: all 0.3s;
+  }
+
+  .show-item::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 0; height: 1px;
+    background: var(--lavender);
+    transition: width 0.4s ease;
+  }
+
+  .show-item:hover::after { width: 100%; }
+  .show-item:hover { background: rgba(155,114,207,0.08); }
+
+  .show-date {
+    text-align: center;
+  }
+
+  .show-date .month {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.3em;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: var(--lavender);
+  }
+
+  .show-date .day {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2.5rem;
+    color: var(--warm-cream);
+    line-height: 1;
+  }
+
+  .show-date .year {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.65rem;
+    color: rgba(242,232,213,0.4);
+    letter-spacing: 0.2em;
+  }
+
+  .show-info .venue {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 1.1rem;
+    color: var(--warm-cream);
+    margin-bottom: 0.2rem;
+  }
+
+  .show-info .city {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    letter-spacing: 0.25em;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.5);
+  }
+
+  .show-info .support {
+    font-size: 0.75rem;
+    color: var(--acid-green);
+    margin-top: 0.3rem;
+    opacity: 0.8;
+  }
+
+  .ticket-btn {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.2rem;
+    border: 1px solid var(--mustard);
+    color: var(--mustard);
+    text-decoration: none;
+    transition: all 0.3s;
+    white-space: nowrap;
+  }
+
+  .ticket-btn:hover {
+    background: var(--mustard);
+    color: var(--ink);
+  }
+
+  .ticket-btn.sold-out {
+    border-color: rgba(242,232,213,0.2);
+    color: rgba(242,232,213,0.3);
+    cursor: not-allowed;
+  }
+
+  /* ===== ABOUT ===== */
+  #about {
+    background:
+      radial-gradient(ellipse at left, rgba(196,84,26,0.12) 0%, transparent 50%),
+      radial-gradient(ellipse at right, rgba(42,107,114,0.12) 0%, transparent 50%),
+      #0F0A0A;
+  }
+
+  .about-layout {
+    max-width: 1000px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.6fr;
+    gap: 5rem;
+    align-items: start;
+  }
+
+  .about-sidebar {
+    position: sticky;
+    top: 8rem;
+  }
+
+  .band-portrait {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background:
+      radial-gradient(ellipse at 60% 30%, rgba(196,84,26,0.5) 0%, transparent 50%),
+      radial-gradient(ellipse at 40% 70%, rgba(42,107,114,0.4) 0%, transparent 50%),
+      linear-gradient(160deg, #1A0F0A 0%, #2A0A2E 60%, #0A1A1A 100%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.5rem;
+    border: 1px solid rgba(212,160,23,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .band-portrait::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 3px,
+      rgba(0,0,0,0.03) 3px,
+      rgba(0,0,0,0.03) 4px
+    );
+  }
+
+  .portrait-caption {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.5);
+    position: relative;
+  }
+
+  .about-text h3 {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2rem;
+    color: var(--burnt-orange);
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
+  }
+
+  .about-text p {
+    font-size: 0.95rem;
+    line-height: 1.9;
+    color: rgba(242,232,213,0.8);
+    margin-bottom: 1.5rem;
+  }
+
+  .about-text p:first-of-type::first-letter {
+    font-family: 'Abril Fatface', serif;
+    font-size: 4rem;
+    float: left;
+    line-height: 0.8;
+    margin: 0.1em 0.1em 0 0;
+    color: var(--mustard);
+    text-shadow: 3px 3px 0 var(--rust);
+  }
+
+  .members-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .member-card {
+    padding: 1rem;
+    border-left: 2px solid var(--burnt-orange);
+    background: rgba(196,84,26,0.05);
+  }
+
+  .member-name {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 0.9rem;
+    color: var(--warm-cream);
+    margin-bottom: 0.2rem;
+  }
+
+  .member-role {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--burnt-orange);
+  }
+
+  /* ===== MEDIA ===== */
+  #media {
+    background:
+      radial-gradient(ellipse at center, rgba(42,107,114,0.15) 0%, transparent 70%),
+      #0A0A1A;
+  }
+
+  .media-masonry {
+    max-width: 1100px;
+    margin: 0 auto;
+    columns: 3;
+    column-gap: 1.2rem;
+  }
+
+  .media-item {
+    break-inside: avoid;
+    margin-bottom: 1.2rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(242,232,213,0.08);
+    cursor: pointer;
+    transition: border-color 0.3s;
+  }
+
+  .media-item:hover {
+    border-color: rgba(212,160,23,0.4);
+  }
+
+  .media-item:hover .media-overlay {
+    opacity: 1;
+  }
+
+  .media-photo {
+    width: 100%;
+    display: block;
+    aspect-ratio: var(--ratio);
+  }
+
+  .media-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(26,10,10,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--mustard);
+  }
+
+  .media-caption {
+    padding: 0.8rem;
+    font-size: 0.7rem;
+    color: rgba(242,232,213,0.4);
+    letter-spacing: 0.1em;
+    background: rgba(0,0,0,0.3);
+  }
+
+  /* VIDEO EMBED PLACEHOLDER */
+  .video-container {
+    max-width: 700px;
+    margin: 3rem auto 0;
+    aspect-ratio: 16/9;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(212,160,23,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .video-container::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 30% 40%, rgba(196,84,26,0.3), transparent 60%),
+      radial-gradient(ellipse at 70% 60%, rgba(155,114,207,0.2), transparent 60%);
+  }
+
+  .play-icon {
+    width: 70px; height: 70px;
+    border-radius: 50%;
+    border: 2px solid var(--mustard);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+    color: var(--mustard);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 0 30px rgba(212,160,23,0.3);
+  }
+
+  .play-icon:hover {
+    background: rgba(212,160,23,0.1);
+    box-shadow: 0 0 50px rgba(212,160,23,0.5);
+  }
+
+  .video-label {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.65rem;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.5);
+    position: relative;
+  }
+
+  /* FOOTER */
+  footer {
+    text-align: center;
+    padding: 3rem;
+    border-top: 1px solid rgba(212,160,23,0.15);
+    background: #0A0A0A;
+  }
+
+  .footer-logo {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2rem;
+    color: var(--mustard);
+    text-shadow: 2px 2px 0 var(--rust);
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    list-style: none;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-links a {
+    font-family: 'Josefin Sans', sans-serif;
+    font-weight: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: rgba(242,232,213,0.4);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  .footer-links a:hover { color: var(--mustard); }
+
+  .footer-copy {
+    font-size: 0.65rem;
+    color: rgba(242,232,213,0.2);
+    letter-spacing: 0.2em;
+  }
+
+  /* ORNAMENT */
+  .ornament {
+    text-align: center;
+    font-size: 1.2rem;
+    color: rgba(212,160,23,0.4);
+    letter-spacing: 1rem;
+    margin: 2rem 0;
+  }
+
+  /* PSYCHEDELIC DECORATIVE RINGS */
+  .deco-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid;
+    pointer-events: none;
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 5rem 1.5rem 3rem; }
+    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .about-sidebar { position: static; }
+    .media-masonry { columns: 2; }
+    .show-item { grid-template-columns: 80px 1fr; }
+    .ticket-btn { display: none; }
+    .music-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Active nav link */
+  .nav-links a.active {
+    color: var(--mustard);
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">☽ DROOL ☾</div>
+  <ul class="nav-links">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#shows">Shows</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#media">Media</a></li>
+  </ul>
+</nav>
+
+<!-- ===== HOME ===== -->
+<section id="home">
+  <div class="band-photo-container">
+    <div class="band-photo-placeholder"></div>
+    <div class="band-photo-ring"></div>
+  </div>
+
+  <div class="band-logo">THE<br>DROOLERS</div>
+  <div class="band-tagline">Psychedelic · Cosmic · Transcendental</div>
+
+  <div class="section-divider"></div>
+
+  <div class="ornament">◆ ◆ ◆</div>
+
+  <div class="scroll-hint">▽ &nbsp; Descend &nbsp; ▽</div>
+</section>
+
+<!-- ===== MUSIC ===== -->
+<section id="music">
+  <div class="section-header">
+    <h2>The Music</h2>
+    <div class="subtitle">Albums · Singles · Sessions</div>
+  </div>
+
+  <div class="music-grid">
+
+    <div class="track-card">
+      <div class="track-number">I</div>
+      <div class="track-title">Dance</div>
+      <div class="track-album">From "Born to Drool" · 2025</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="togglePlay(this)">▶</button>
+        <div class="waveform" id="wave1">
+          <!-- bars generated by JS -->
+        </div>
+        <span style="font-size:0.65rem;color:rgba(242,232,213,0.4);letter-spacing:0.1em;">3:47</span>
+      </div>
+      <div class="stream-links">
+        <a href="https://www.youtube.com/watch?v=y9rDiP1uf5c" target="_blank" class="stream-btn youtube">YouTube</a>
+        <a href="https://music.apple.com/us/album/dance-single/1834380681" target="_blank" class="stream-btn apple">Apple Music</a>
+        <a href="https://open.spotify.com/track/4JitYC3IYdal85GIkr6pu6" target="_blank" class="stream-btn spotify">Spotify</a>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-number">II</div>
+      <div class="track-title">Hey Judy</div>
+      <div class="track-album">From "Born to Drool" · 2025</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="togglePlay(this)">▶</button>
+        <div class="waveform" id="wave2"></div>
+        <span style="font-size:0.65rem;color:rgba(242,232,213,0.4);letter-spacing:0.1em;">3:53</span>
+      </div>
+      <div class="stream-links">
+        <a href="https://open.https://www.youtube.com/watch?v=dCd30W4lQis.com" target="_blank" class="stream-btn youtube">YouTube</a>
+        <a href="https://music.apple.com/us/album/hey-judy-single/1859046409" target="_blank" class="stream-btn apple">Apple Music</a>
+        <a href="https://open.spotify.com/track/5oT8Z6N2PtIw3sh4qOdCg1" target="_blank" class="stream-btn spotify">Spotify</a>
+      </div>
+    </div>
+
+    <div class="track-card">
+      <div class="track-number">III</div>
+      <div class="track-title">Maria</div>
+      <div class="track-album">From "Born to Drool" · 2026</div>
+      <div class="audio-player">
+        <button class="play-btn" onclick="togglePlay(this)">▶</button>
+        <div class="waveform" id="wave3"></div>
+        <span style="font-size:0.65rem;color:rgba(242,232,213,0.4);letter-spacing:0.1em;">0:00</span>
+      </div>
+      <div class="stream-links">
+        <a href="" target="_blank" class="stream-btn spotify">Spotify</a>
+        <a href="" target="_blank" class="stream-btn apple">Apple Music</a>
+        <a href="" target="_blank" class="stream-btn bandcamp">YouTube</a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== SHOWS ===== -->
+<section id="shows">
+  <div class="section-header">
+    <h2>Upcoming Shows</h2>
+    <div class="subtitle">Come drool with us</div>
+  </div>
+
+  <div class="shows-list">
+
+    <div class="show-item">
+      <div class="show-date">
+        <div class="month">Mar</div>
+        <div class="day">29</div>
+        <div class="year">2025</div>
+      </div>
+      <div class="show-info">
+        <div class="venue">THE Colonial Tavern</div>
+        <div class="city">Fredericksburg, VA</div>
+        <div class="support">with SWAMP TRASH USA feat. SHADOW</div>
+      </div>
+      <a href="#" class="ticket-btn sold-out">Sold Out</a>
+    </div>
+
+    <div class="show-item">
+      <div class="show-date">
+        <div class="month">Apr</div>
+        <div class="day">20</div>
+        <div class="year">2026</div>
+      </div>
+      <div class="show-info">
+        <div class="venue">Buffalo Wild Wings</div>
+        <div class="city">Stafford Marketplace, VA</div>
+        <div class="support">Headlining</div>
+      </div>
+      <a href="#" class="ticket-btn">Tickets</a>
+    </div>
+
+    <div class="show-item">
+      <div class="show-date">
+        <div class="month">May</div>
+        <div class="day">17</div>
+        <div class="year">2026</div>
+      </div>
+      <div class="show-info">
+        <div class="venue">9:30 Club</div>
+        <div class="city">Washington, D.C.</div>
+        <div class="support">Headlining</div>
+      </div>
+      <a href="#" class="ticket-btn">Tickets</a>
+    </div>
+
+  </div>
+
+  <div class="ornament" style="margin-top: 3rem;">◇ &nbsp; &nbsp; ◇ &nbsp; &nbsp; ◇</div>
+</section>
+
+<!-- ===== ABOUT ===== -->
+<section id="about">
+  <div class="section-header">
+    <h2>The Band</h2>
+    <div class="subtitle">Origin · History · Mythology</div>
+  </div>
+
+ <div class="about-layout">
+    <div class="about-sidebar">
+      <div class="band-portrait" style="padding:0; overflow:hidden;">
+        <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_cover.jpeg" alt="The Velvet Eclipse" style="width:100%; height:100%; object-fit:cover; display:block;">
+        <div class="portrait-caption" style="position:absolute; bottom:0; left:0; right:0; padding:1.5rem; background:linear-gradient(transparent, rgba(0,0,0,0.7));">Fredericksburg, VA — Est. 2024</div>
+      </div>
+      <div class="members-grid" style="margin-top:1.5rem;">
+        <div class="member-card">
+          <div class="member-name">Brian</div>
+          <div class="member-role">Bass</div>
+        </div>
+        <div class="member-card">
+          <div class="member-name">Luis</div>
+          <div class="member-role">Guitar</div>
+        </div>
+        <div class="member-card">
+          <div class="member-name">Duane</div>
+          <div class="member-role">Banjo</div>
+        </div>
+        <div class="member-card">
+          <div class="member-name">Goldmode</div>
+          <div class="member-role">Vocals</div>
+        </div>
+         <div class="member-card">
+          <div class="member-name">Gus</div>
+          <div class="member-role">Drums</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="about-text">
+      <h3>"We play music for those who drool."</h3>
+
+      <p>The Droolers, started as a passion project from Power Castle Productions</p>
+
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== MEDIA ===== -->
+<section id="media">
+  <div class="section-header">
+    <h2>Media</h2>
+    <div class="subtitle">Photos · Film · Visions</div>
+  </div>
+
+  <div class="media-masonry" id="mediaGrid">
+
+  <div class="media-item">
+    <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_roses.PNG" alt="Drool" style="width:100%;display:block;object-fit:cover;">
+    <div class="media-overlay">View</div>
+    <div class="media-caption">Stay Drooly, 2025</div>
+  </div>
+
+  
+</div>
+
+  <div class="video-container" style="margin-top: 3rem;">
+    <div class="play-icon">▶</div>
+    <div class="video-label">Live at The Colonial Tavern — "Dance" (Official Video)</div>
+  </div>
+
+  <div class="ornament" style="margin-top: 3rem;">✦ &nbsp; ✦ &nbsp; ✦</div>
+</section>
+
+<footer>
+  <div class="footer-logo">The Droolers</div>
+  <ul class="footer-links">
+    <li><a href="https://open.spotify.com" target="_blank">Spotify</a></li>
+    <li><a href="https://music.apple.com" target="_blank">Apple Music</a></li>
+    <li><a href="#" target="_blank">Instagram</a></li>
+    <li><a href="#" target="_blank">Bandcamp</a></li>
+    <li><a href="mailto:manager@vthedroolers.com">Contact</a></li>
+  </ul>
+  <div class="footer-copy">© 2026 The Droolers · All rights reserved · Born to drool</div>
+</footer>
+
+<script>
+  // Generate waveform bars
+  function buildWaveforms() {
+    const heights = [6,10,14,8,18,12,20,9,16,13,22,8,17,11,19,7,15,12,18,10,14,8,20,13,16,11];
+    ['wave1','wave2','wave3','wave4'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      heights.forEach(h => {
+        const bar = document.createElement('div');
+        bar.className = 'waveform-bar';
+        bar.style.height = h + 'px';
+        bar.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+        el.appendChild(bar);
+      });
+    });
+  }
+
+  // Toggle play button
+  function togglePlay(btn) {
+    const isPlaying = btn.textContent === '■';
+    document.querySelectorAll('.play-btn').forEach(b => b.textContent = '▶');
+    document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
+    if (!isPlaying) {
+      btn.textContent = '■';
+      const wave = btn.nextElementSibling;
+      wave.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'running');
+    }
+  }
+
+  // Pause all bars initially
+  document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
+
+
+  // Active nav on scroll
+  function updateActiveNav() {
+    const sections = document.querySelectorAll('section');
+    const links = document.querySelectorAll('.nav-links a');
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 200) current = s.id;
+    });
+    links.forEach(a => {
+      a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveNav);
+
+  buildWaveforms();
+  // Re-pause after building
+  setTimeout(() => {
+    document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
+  }, 10);
+  buildMediaGrid();
+  updateActiveNav();
+</script>
+</body>
+</html>
