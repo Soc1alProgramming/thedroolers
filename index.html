@@ -132,16 +132,19 @@
 
   .band-photo-container {
     position: relative;
-    width: 420px;
-    height: 420px;
-    margin-bottom: 3rem;
-    border-radius: 50%;
-    overflow: hidden;
+    width: clamp(260px, 42vw, 380px);
+    height: clamp(260px, 42vw, 380px);
+    margin-bottom: 3.5rem;
+    flex-shrink: 0;
+    /* No overflow:hidden here — ring must be visible */
   }
 
+  /* Photo circle fills container exactly */
   .band-photo-placeholder {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    overflow: hidden;
     background: 
       radial-gradient(ellipse at 30% 40%, rgba(196,84,26,0.6) 0%, transparent 50%),
       radial-gradient(ellipse at 70% 60%, rgba(155,114,207,0.5) 0%, transparent 50%),
@@ -150,37 +153,49 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
   }
 
   .band-photo-placeholder::after {
     content: '☽ ☀ ☾';
-    font-size: 3rem;
-    letter-spacing: 1rem;
+    font-size: 2.5rem;
+    letter-spacing: 0.8rem;
     opacity: 0.3;
     color: var(--mustard);
   }
 
-  .band-photo-ring {
-    position: absolute;
-    inset: -8px;
-    border-radius: 50%;
-    border: 2px solid var(--mustard);
-    box-shadow: 
-      0 0 30px rgba(212,160,23,0.4),
-      inset 0 0 30px rgba(212,160,23,0.1);
-    animation: spin-slow 30s linear infinite;
+  /* Any real <img> placed inside also clips to circle */
+  .band-photo-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
   }
 
-  .band-photo-ring::before {
-    content: '◆ ◆ ◆ ◆ ◆ ◆ ◆ ◆';
+  /* Ring sits exactly on top of photo edges — no gap */
+  .band-photo-ring {
     position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    letter-spacing: 3.2em;
-    font-size: 0.5rem;
-    color: var(--mustard);
-    white-space: nowrap;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid var(--mustard);
+    box-shadow:
+      0 0 30px rgba(212,160,23,0.4),
+      inset 0 0 20px rgba(212,160,23,0.08);
+    animation: spin-slow 30s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Remove old ::before text-based diamonds — JS places them properly */
+  .band-photo-ring::before { display: none; }
+
+  /* JS-placed diamond dots on ring */
+  .ring-diamond {
+    position: absolute;
+    width: 7px;
+    height: 7px;
+    background: var(--mustard);
+    transform: translate(-50%, -50%) rotate(45deg);
+    box-shadow: 0 0 6px rgba(212,160,23,0.8);
+    pointer-events: none;
   }
 
   @keyframes spin-slow {
@@ -820,22 +835,126 @@
     pointer-events: none;
   }
 
-  /* Responsive */
-  @media (max-width: 768px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { gap: 1.2rem; }
-    section { padding: 5rem 1.5rem 3rem; }
-    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+  /* Active nav link */
+  .nav-links a.active { color: var(--mustard); }
+
+  /* ===== HAMBURGER ===== */
+  .nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 8px;
+    z-index: 2000;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .nav-hamburger span {
+    display: block;
+    width: 26px;
+    height: 2px;
+    background: var(--mustard);
+    border-radius: 2px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+  .nav-hamburger.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+  .nav-hamburger.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  /* ===== MOBILE MENU ===== */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,3,12,0.98);
+    z-index: 1500;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu-logo {
+    font-family: 'Uncial Antiqua', serif;
+    font-size: 0.85rem;
+    color: var(--mustard);
+    letter-spacing: 0.4em;
+    opacity: 0.6;
+    margin-bottom: 2.5rem;
+  }
+  .mobile-menu a {
+    font-family: 'Abril Fatface', serif;
+    font-size: 2.4rem;
+    color: var(--warm-cream);
+    text-decoration: none;
+    padding: 0.65rem 2rem;
+    transition: color 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-menu a:active { color: var(--mustard); }
+
+  /* ===== TABLET ===== */
+  @media (max-width: 900px) {
+    .about-layout { grid-template-columns: 1fr; gap: 3rem; }
     .about-sidebar { position: static; }
-    .media-masonry { columns: 2; }
-    .show-item { grid-template-columns: 80px 1fr; }
-    .ticket-btn { display: none; }
-    .music-grid { grid-template-columns: 1fr; }
+    .band-portrait { aspect-ratio: 4/3; }
   }
 
-  /* Active nav link */
-  .nav-links a.active {
-    color: var(--mustard);
+  /* ===== MOBILE ===== */
+  @media (max-width: 768px) {
+    nav { padding: 0.9rem 1.2rem; }
+    .nav-links { display: none; }
+    .nav-hamburger { display: flex; }
+
+    section { padding: 5rem 1.2rem 3rem; min-height: auto; }
+    #home { min-height: 100vh; padding-top: 0; }
+
+    .band-logo { font-size: clamp(2.6rem, 13vw, 5rem); }
+    .band-tagline { font-size: 0.6rem; letter-spacing: 0.25em; }
+    .section-header { margin-bottom: 2rem; }
+    .section-header h2 { font-size: clamp(1.9rem, 9vw, 3.2rem); }
+
+    .music-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .track-card { padding: 1.4rem 1.1rem; }
+    .stream-links { gap: 0.5rem; }
+    .stream-btn { font-size: 0.58rem; padding: 0.5rem 0.75rem; }
+
+    .show-item {
+      grid-template-columns: 65px 1fr;
+      grid-template-rows: auto auto;
+      gap: 0.8rem 1rem;
+      padding: 1rem 1.1rem;
+    }
+    .show-date .day { font-size: 1.9rem; }
+    .show-info .venue { font-size: 0.95rem; }
+    .ticket-btn {
+      grid-column: 1 / -1;
+      display: block;
+      text-align: center;
+      padding: 0.7rem;
+    }
+
+    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .about-sidebar { position: static; }
+    .band-portrait { aspect-ratio: 4/3; }
+    .members-grid { grid-template-columns: 1fr 1fr; gap: 0.7rem; }
+    .about-text h3 { font-size: 1.3rem; }
+    .about-text p:first-of-type::first-letter { font-size: 2.8rem; }
+
+    .media-masonry { columns: 2; column-gap: 0.8rem; }
+    .media-item { margin-bottom: 0.8rem; }
+
+    footer { padding: 2rem 1rem; }
+    .footer-links { flex-wrap: wrap; gap: 0.9rem; }
+    .footer-copy { font-size: 0.55rem; }
+  }
+
+  /* ===== SMALL PHONES ===== */
+  @media (max-width: 420px) {
+    .media-masonry { columns: 1; }
+    .stream-btn { flex: 1 1 auto; text-align: center; }
+    .show-item { grid-template-columns: 55px 1fr; }
   }
 </style>
 </head>
@@ -850,7 +969,20 @@
     <li><a href="#about">About</a></li>
     <li><a href="#media">Media</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Open menu" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE FULLSCREEN MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-logo">☽ THE DROOLERS ☾</div>
+  <a href="#home"  onclick="closeMenu()">Home</a>
+  <a href="#music" onclick="closeMenu()">Music</a>
+  <a href="#shows" onclick="closeMenu()">Shows</a>
+  <a href="#about" onclick="closeMenu()">About</a>
+  <a href="#media" onclick="closeMenu()">Media</a>
+</div>
 
 <!-- ===== HOME ===== -->
 <section id="home">
@@ -905,7 +1037,7 @@
         <span style="font-size:0.65rem;color:rgba(242,232,213,0.4);letter-spacing:0.1em;">3:53</span>
       </div>
       <div class="stream-links">
-        <a href="https://open.https://www.youtube.com/watch?v=dCd30W4lQis.com" target="_blank" class="stream-btn youtube">YouTube</a>
+        <a href="https://www.youtube.com/watch?v=dCd30W4lQis" target="_blank" class="stream-btn youtube">YouTube</a>
         <a href="https://music.apple.com/us/album/hey-judy-single/1859046409" target="_blank" class="stream-btn apple">Apple Music</a>
         <a href="https://open.spotify.com/track/5oT8Z6N2PtIw3sh4qOdCg1" target="_blank" class="stream-btn spotify">Spotify</a>
       </div>
@@ -933,7 +1065,7 @@
 <!-- ===== SHOWS ===== -->
 <section id="shows">
   <div class="section-header">
-    <h2>Upcoming Shows</h2>
+    <h2>The Shows</h2>
     <div class="subtitle"></div>
   </div>
 
@@ -955,8 +1087,7 @@
 
     <div class="show-item">
       <div class="show-date">
-        <div class="month">Apr</div>
-        <div class="day">20</div>
+
         <div class="year">2026</div>
       </div>
       <div class="show-info">
@@ -967,19 +1098,6 @@
       <a href="#" class="ticket-btn">Tickets</a>
     </div>
 
-    <div class="show-item">
-      <div class="show-date">
-        <div class="month">May</div>
-        <div class="day">17</div>
-        <div class="year">2026</div>
-      </div>
-      <div class="show-info">
-        <div class="venue">9:30 Club</div>
-        <div class="city">Washington, D.C.</div>
-        <div class="support">Headlining</div>
-      </div>
-      <a href="#" class="ticket-btn">Tickets</a>
-    </div>
 
   </div>
 
@@ -1066,66 +1184,93 @@
     <li><a href="https://open.spotify.com" target="_blank">Spotify</a></li>
     <li><a href="https://music.apple.com" target="_blank">Apple Music</a></li>
     <li><a href="#" target="_blank">Instagram</a></li>
-    <li><a href="#" target="_blank">Bandcamp</a></li>
-    <li><a href="mailto:manager@vthedroolers.com">Contact</a></li>
+    <li><a href="https://www.youtube.com/channel/UCDTbbUC_TBroCxUa_anZlgw" target="_blank">YouTube</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#a8c5c9c6c9cfcddae8dedcc0cdccdac7c7c4cddadb86cbc7c5">Contact</a></li>
   </ul>
   <div class="footer-copy">© 2026 The Droolers · All rights reserved · Born to drool</div>
 </footer>
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-  // Generate waveform bars
+  /* ---- Hamburger ---- */
+  function toggleMenu() {
+    var btn  = document.getElementById('hamburger');
+    var menu = document.getElementById('mobileMenu');
+    var opening = !menu.classList.contains('open');
+    btn.classList.toggle('open', opening);
+    menu.classList.toggle('open', opening);
+    document.body.style.overflow = opening ? 'hidden' : '';
+  }
+  function closeMenu() {
+    document.getElementById('hamburger').classList.remove('open');
+    document.getElementById('mobileMenu').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  /* ---- Place diamonds symmetrically on the ring using trig ---- */
+  function buildRingDiamonds() {
+    var ring = document.querySelector('.band-photo-ring');
+    if (!ring) return;
+    var count = 8;
+    for (var i = 0; i < count; i++) {
+      var angle = (i / count) * 2 * Math.PI; /* evenly spaced radians */
+      var radius = 50; /* 50% = edge of the circle */
+      var x = 50 + radius * Math.cos(angle);
+      var y = 50 + radius * Math.sin(angle);
+      var dot = document.createElement('div');
+      dot.className = 'ring-diamond';
+      dot.style.left = x + '%';
+      dot.style.top  = y + '%';
+      ring.appendChild(dot);
+    }
+  }
+
+  /* ---- Waveform bars ---- */
   function buildWaveforms() {
-    const heights = [6,10,14,8,18,12,20,9,16,13,22,8,17,11,19,7,15,12,18,10,14,8,20,13,16,11];
-    ['wave1','wave2','wave3','wave4'].forEach(id => {
-      const el = document.getElementById(id);
+    var heights = [6,10,14,8,18,12,20,9,16,13,22,8,17,11,19,7,15,12,18,10,14,8,20,13,16,11];
+    ['wave1','wave2','wave3','wave4'].forEach(function(id) {
+      var el = document.getElementById(id);
       if (!el) return;
-      heights.forEach(h => {
-        const bar = document.createElement('div');
+      heights.forEach(function(h) {
+        var bar = document.createElement('div');
         bar.className = 'waveform-bar';
         bar.style.height = h + 'px';
         bar.style.animationDuration = (1.2 + Math.random() * 0.8) + 's';
+        bar.style.animationPlayState = 'paused';
         el.appendChild(bar);
       });
     });
   }
 
-  // Toggle play button
+  /* ---- Play button ---- */
   function togglePlay(btn) {
-    const isPlaying = btn.textContent === '■';
-    document.querySelectorAll('.play-btn').forEach(b => b.textContent = '▶');
-    document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
+    var isPlaying = btn.textContent === '■';
+    document.querySelectorAll('.play-btn').forEach(function(b) { b.textContent = '▶'; });
+    document.querySelectorAll('.waveform-bar').forEach(function(b) { b.style.animationPlayState = 'paused'; });
     if (!isPlaying) {
       btn.textContent = '■';
-      const wave = btn.nextElementSibling;
-      wave.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'running');
+      btn.nextElementSibling.querySelectorAll('.waveform-bar').forEach(function(b) {
+        b.style.animationPlayState = 'running';
+      });
     }
   }
 
-  // Pause all bars initially
-  document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
-
-
-  // Active nav on scroll
+  /* ---- Active nav ---- */
   function updateActiveNav() {
-    const sections = document.querySelectorAll('section');
-    const links = document.querySelectorAll('.nav-links a');
-    let current = '';
-    sections.forEach(s => {
+    var sections = document.querySelectorAll('section');
+    var links    = document.querySelectorAll('.nav-links a');
+    var current  = '';
+    sections.forEach(function(s) {
       if (window.scrollY >= s.offsetTop - 200) current = s.id;
     });
-    links.forEach(a => {
+    links.forEach(function(a) {
       a.classList.toggle('active', a.getAttribute('href') === '#' + current);
     });
   }
 
   window.addEventListener('scroll', updateActiveNav);
-
+  buildRingDiamonds();
   buildWaveforms();
-  // Re-pause after building
-  setTimeout(() => {
-    document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
-  }, 10);
-  buildMediaGrid();
   updateActiveNav();
 </script>
 </body>
