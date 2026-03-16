@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Droolers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Special+Elite&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Special+Elite&family=Caesar+Dressing&family=Permanent+Marker&family=Saira+Stencil+One&family=Jolly+Lodger&family=Bungee+Shade&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
 <style>
   :root {
     --burnt-orange: #C4541A;
@@ -57,7 +57,7 @@
   }
 
   .nav-logo {
-    font-family: 'Uncial Antiqua', serif;
+    font-family: '', sans-serif;
     font-size: 1.1rem;
     color: var(--mustard);
     letter-spacing: 0.2em;
@@ -189,7 +189,7 @@
   }
 
   .band-logo {
-    font-family: 'Abril Fatface', serif;
+    font-family: 'Permanent Marker', serif;
     font-size: clamp(3rem, 8vw, 7rem);
     color: var(--mustard);
     line-height: 0.9;
@@ -820,259 +820,29 @@
     pointer-events: none;
   }
 
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    section { padding: 5rem 1.5rem 3rem; }
+    .about-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .about-sidebar { position: static; }
+    .media-masonry { columns: 2; }
+    .show-item { grid-template-columns: 80px 1fr; }
+    .ticket-btn { display: none; }
+    .music-grid { grid-template-columns: 1fr; }
+  }
+
   /* Active nav link */
   .nav-links a.active {
     color: var(--mustard);
-  }
-
-  /* ===== HAMBURGER BUTTON ===== */
-  .nav-hamburger {
-    display: none;
-    flex-direction: column;
-    gap: 5px;
-    cursor: pointer;
-    background: none;
-    border: none;
-    padding: 4px;
-    z-index: 1100;
-  }
-
-  .nav-hamburger span {
-    display: block;
-    width: 24px;
-    height: 2px;
-    background: var(--mustard);
-    transition: all 0.3s ease;
-    transform-origin: center;
-  }
-
-  .nav-hamburger.open span:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-  .nav-hamburger.open span:nth-child(2) {
-    opacity: 0;
-  }
-  .nav-hamburger.open span:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* ===== MOBILE MENU OVERLAY ===== */
-  .mobile-menu {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(10,5,15,0.97);
-    z-index: 1050;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 2.5rem;
-  }
-
-  .mobile-menu.open {
-    display: flex;
-  }
-
-  .mobile-menu a {
-    font-family: 'Abril Fatface', serif;
-    font-size: 2.2rem;
-    color: var(--warm-cream);
-    text-decoration: none;
-    letter-spacing: 0.1em;
-    transition: color 0.2s;
-  }
-
-  .mobile-menu a:hover,
-  .mobile-menu a:active {
-    color: var(--mustard);
-  }
-
-  .mobile-menu-logo {
-    font-family: 'Uncial Antiqua', serif;
-    font-size: 0.9rem;
-    color: var(--mustard);
-    letter-spacing: 0.3em;
-    margin-bottom: 1rem;
-    opacity: 0.7;
-  }
-
-  /* ===== TABLET (max 900px) ===== */
-  @media (max-width: 900px) {
-    .about-layout {
-      grid-template-columns: 1fr;
-      gap: 3rem;
-    }
-    .about-sidebar { position: static; }
-    .band-portrait { aspect-ratio: 16/9; }
-  }
-
-  /* ===== MOBILE (max 768px) ===== */
-  @media (max-width: 768px) {
-
-    /* NAV */
-    nav {
-      padding: 1rem 1.5rem;
-    }
-    .nav-links {
-      display: none; /* hidden on mobile — use hamburger instead */
-    }
-    .nav-hamburger {
-      display: flex;
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 5rem 1.2rem 3rem;
-      min-height: auto;
-    }
-
-    /* HOME */
-    #home {
-      min-height: 100vh;
-      padding-top: 0;
-    }
-    .band-photo-container {
-      width: min(280px, 80vw);
-      height: min(280px, 80vw);
-      margin-bottom: 2rem;
-    }
-    .band-logo {
-      font-size: clamp(2.8rem, 14vw, 5rem);
-    }
-    .band-tagline {
-      font-size: 0.6rem;
-      letter-spacing: 0.3em;
-    }
-
-    /* SECTION HEADERS */
-    .section-header {
-      margin-bottom: 2.5rem;
-    }
-    .section-header h2 {
-      font-size: clamp(2rem, 10vw, 3.5rem);
-    }
-
-    /* MUSIC */
-    .music-grid {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-    }
-    .track-card {
-      padding: 1.5rem 1.2rem;
-    }
-    .stream-links {
-      gap: 0.5rem;
-    }
-    .stream-btn {
-      font-size: 0.6rem;
-      padding: 0.5rem 0.8rem;
-    }
-
-    /* SHOWS */
-    .show-item {
-      grid-template-columns: 70px 1fr;
-      gap: 1rem;
-      padding: 1.2rem;
-    }
-    .show-date .day {
-      font-size: 2rem;
-    }
-    .show-info .venue {
-      font-size: 0.95rem;
-    }
-    .ticket-btn {
-      grid-column: 1 / -1;
-      text-align: center;
-      padding: 0.7rem;
-      margin-top: 0.5rem;
-      display: block;
-    }
-
-    /* ABOUT */
-    .about-layout {
-      grid-template-columns: 1fr;
-      gap: 2rem;
-    }
-    .about-sidebar { position: static; }
-    .band-portrait {
-      aspect-ratio: 4/3;
-    }
-    .members-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 0.8rem;
-    }
-    .about-text h3 {
-      font-size: 1.4rem;
-    }
-    .about-text p:first-of-type::first-letter {
-      font-size: 3rem;
-    }
-
-    /* MEDIA */
-    .media-masonry {
-      columns: 2;
-      column-gap: 0.8rem;
-    }
-    .media-item {
-      margin-bottom: 0.8rem;
-    }
-    .video-container {
-      margin-top: 1.5rem;
-    }
-
-    /* FOOTER */
-    footer {
-      padding: 2rem 1.2rem;
-    }
-    .footer-links {
-      flex-wrap: wrap;
-      gap: 1rem;
-      justify-content: center;
-    }
-    .footer-copy {
-      font-size: 0.55rem;
-    }
-  }
-
-  /* ===== SMALL MOBILE (max 420px) ===== */
-  @media (max-width: 420px) {
-    .band-photo-container {
-      width: 70vw;
-      height: 70vw;
-    }
-    .band-logo {
-      font-size: clamp(2.2rem, 16vw, 3.5rem);
-    }
-    .media-masonry {
-      columns: 1;
-    }
-    .show-item {
-      grid-template-columns: 1fr;
-      text-align: center;
-    }
-    .show-date {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-    }
-    .show-date .day {
-      font-size: 1.8rem;
-    }
-    .members-grid {
-      grid-template-columns: 1fr;
-    }
-    .stream-btn {
-      flex: 1;
-      text-align: center;
-    }
   }
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">☽ DROOL ☾</div>
+  <div class="nav-logo"><br></div>
   <ul class="nav-links">
     <li><a href="#home">Home</a></li>
     <li><a href="#music">Music</a></li>
@@ -1080,20 +850,7 @@
     <li><a href="#about">About</a></li>
     <li><a href="#media">Media</a></li>
   </ul>
-  <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
-
-<!-- MOBILE MENU OVERLAY -->
-<div class="mobile-menu" id="mobileMenu">
-  <div class="mobile-menu-logo">☽ THE DROOLERS ☾</div>
-  <a href="#home" class="mobile-nav-link">Home</a>
-  <a href="#music" class="mobile-nav-link">Music</a>
-  <a href="#shows" class="mobile-nav-link">Shows</a>
-  <a href="#about" class="mobile-nav-link">About</a>
-  <a href="#media" class="mobile-nav-link">Media</a>
-</div>
 
 <!-- ===== HOME ===== -->
 <section id="home">
@@ -1103,7 +860,6 @@
   </div>
 
   <div class="band-logo">THE<br>DROOLERS</div>
-  <div class="band-tagline">Psychedelic · Cosmic · Transcendental</div>
 
   <div class="section-divider"></div>
 
@@ -1124,7 +880,7 @@
     <div class="track-card">
       <div class="track-number">I</div>
       <div class="track-title">Dance</div>
-      <div class="track-album">From "Born to Drool" · 2025</div>
+      <div class="track-album">2025</div>
       <div class="audio-player">
         <button class="play-btn" onclick="togglePlay(this)">▶</button>
         <div class="waveform" id="wave1">
@@ -1142,7 +898,7 @@
     <div class="track-card">
       <div class="track-number">II</div>
       <div class="track-title">Hey Judy</div>
-      <div class="track-album">From "Born to Drool" · 2025</div>
+      <div class="track-album">2025</div>
       <div class="audio-player">
         <button class="play-btn" onclick="togglePlay(this)">▶</button>
         <div class="waveform" id="wave2"></div>
@@ -1158,7 +914,7 @@
     <div class="track-card">
       <div class="track-number">III</div>
       <div class="track-title">Maria</div>
-      <div class="track-album">From "Born to Drool" · 2026</div>
+      <div class="track-album">2026</div>
       <div class="audio-player">
         <button class="play-btn" onclick="togglePlay(this)">▶</button>
         <div class="waveform" id="wave3"></div>
@@ -1178,7 +934,7 @@
 <section id="shows">
   <div class="section-header">
     <h2>Upcoming Shows</h2>
-    <div class="subtitle">Come drool with us</div>
+    <div class="subtitle"></div>
   </div>
 
   <div class="shows-list">
@@ -1192,7 +948,7 @@
       <div class="show-info">
         <div class="venue">THE Colonial Tavern</div>
         <div class="city">Fredericksburg, VA</div>
-        <div class="support">with SWAMP TRASH USA feat. SHADOW</div>
+        <div class="support"></div>
       </div>
       <a href="#" class="ticket-btn sold-out">Sold Out</a>
     </div>
@@ -1204,9 +960,9 @@
         <div class="year">2026</div>
       </div>
       <div class="show-info">
-        <div class="venue">Buffalo Wild Wings</div>
-        <div class="city">Stafford Marketplace, VA</div>
-        <div class="support">Headlining</div>
+        <div class="venue">Coming Soon</div>
+        <div class="city"></div>
+        <div class="support"></div>
       </div>
       <a href="#" class="ticket-btn">Tickets</a>
     </div>
@@ -1311,12 +1067,12 @@
     <li><a href="https://music.apple.com" target="_blank">Apple Music</a></li>
     <li><a href="#" target="_blank">Instagram</a></li>
     <li><a href="#" target="_blank">Bandcamp</a></li>
-    <li><a href="/cdn-cgi/l/email-protection#2e434f404f494b5c6e585a464b4a5c4141424b5c5d004d4143">Contact</a></li>
+    <li><a href="mailto:manager@vthedroolers.com">Contact</a></li>
   </ul>
   <div class="footer-copy">© 2026 The Droolers · All rights reserved · Born to drool</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
   // Generate waveform bars
   function buildWaveforms() {
     const heights = [6,10,14,8,18,12,20,9,16,13,22,8,17,11,19,7,15,12,18,10,14,8,20,13,16,11];
@@ -1364,23 +1120,13 @@
 
   window.addEventListener('scroll', updateActiveNav);
 
-  // Hamburger menu
-  const hamburger = document.getElementById('hamburger');
-  const mobileMenu = document.getElementById('mobileMenu');
-  hamburger.addEventListener('click', () => {
-    hamburger.classList.toggle('open');
-    mobileMenu.classList.toggle('open');
-    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
-  });
-  document.querySelectorAll('.mobile-nav-link').forEach(link => {
-    link.addEventListener('click', () => {
-      hamburger.classList.remove('open');
-      mobileMenu.classList.remove('open');
-      document.body.style.overflow = '';
-    });
-  });
-
   buildWaveforms();
   // Re-pause after building
   setTimeout(() => {
-    document.querySelectorAll
+    document.querySelectorAll('.waveform-bar').forEach(b => b.style.animationPlayState = 'paused');
+  }, 10);
+  buildMediaGrid();
+  updateActiveNav();
+</script>
+</body>
+</html>
