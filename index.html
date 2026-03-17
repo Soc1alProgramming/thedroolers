@@ -121,74 +121,22 @@
     z-index: 2;
   }
 
-  /* ===== GOO DRIP UNIT ===== */
-  /* Wraps logo + drip panel so they share a single goo filter context */
+  /* ===== GOO CANVAS ===== */
   .logo-drip-unit {
     display: flex;
     flex-direction: column;
     align-items: center;
-    /* goo filter applied to whole unit so blobs merge with letter bottoms */
-    filter: url(#logo-goo);
     margin-bottom: 2.5rem;
     position: relative;
     z-index: 1;
   }
 
-  /* The drip panel sits directly below the logo, same width */
-  .logo-drip-panel {
+  #gooCanvas {
+    display: block;
+    margin-top: -8px;
     position: relative;
-    width: clamp(220px, 50vw, 520px);
-    height: clamp(60px, 8vw, 110px);
-    overflow: visible;
-    /* Needs a visible background so goo filter has something to work with */
-    background: transparent;
-  }
-
-  /* Each drip strand */
-  .logo-drip {
-    position: absolute;
-    top: 0;
-    border-radius: 0 0 40% 40%;
-    background: var(--mustard);
-    transform-origin: top center;
-    animation: logo-drip-fall ease-in-out infinite;
-  }
-
-  /* Teardrop bulge at the tip of each drip */
-  .logo-drip::after {
-    content: '';
-    position: absolute;
-    bottom: -45%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 200%;
-    aspect-ratio: 1 / 1;
-    border-radius: 50%;
-    background: inherit;
-  }
-
-  /* 9 drips spread across the logo width, varied timing & size */
-  .ld1  { left:  4%; width: 4.5%; animation-duration: 3.4s; animation-delay: 0.0s; }
-  .ld2  { left: 13%; width: 3.0%; animation-duration: 4.8s; animation-delay: 1.3s; }
-  .ld3  { left: 22%; width: 5.5%; animation-duration: 3.1s; animation-delay: 0.6s; }
-  .ld4  { left: 32%; width: 2.8%; animation-duration: 5.2s; animation-delay: 2.1s; }
-  .ld5  { left: 42%; width: 4.0%; animation-duration: 3.7s; animation-delay: 0.9s; }
-  .ld6  { left: 53%; width: 3.5%; animation-duration: 4.3s; animation-delay: 1.7s; }
-  .ld7  { left: 63%; width: 5.0%; animation-duration: 3.0s; animation-delay: 0.3s; }
-  .ld8  { left: 74%; width: 2.5%; animation-duration: 4.6s; animation-delay: 2.5s; }
-  .ld9  { left: 84%; width: 3.8%; animation-duration: 3.9s; animation-delay: 1.1s; }
-
-  @keyframes logo-drip-fall {
-    /* Drip stretches down from 0, bulges at tip, falls and fades */
-    0%   { height: 5%;  opacity: 0.9; }
-    20%  { height: 35%; opacity: 1;   }
-    55%  { height: 70%; opacity: 1;   }
-    85%  { height: 90%; opacity: 0.7; }
-    100% { height: 5%;  opacity: 0;   }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .logo-drip { animation: none; height: 40%; opacity: 0.3; }
+    z-index: 1;
+    pointer-events: none;
   }
 
   @keyframes flicker {
@@ -958,40 +906,12 @@
   <a href="#media" onclick="closeMenu()">Media</a>
 </div>
 
-<!-- SVG goo filter — blurs then thresholds alpha so blobs merge organically -->
-<svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
-  <defs>
-    <filter id="logo-goo" x="-20%" y="-20%" width="140%" height="160%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
-      <feColorMatrix in="blur" mode="matrix"
-        values="1 0 0 0 0
-                0 1 0 0 0
-                0 0 1 0 0
-                0 0 0 28 -10" result="goo"/>
-      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
-    </filter>
-  </defs>
-</svg>
-
 <!-- ===== HOME ===== -->
 <section id="home">
-
-  <!-- Logo + drip panel share one goo filter so drips merge into letter bottoms -->
   <div class="logo-drip-unit">
-    <div class="band-logo">THE<br>DROOLERS</div>
-    <div class="logo-drip-panel">
-      <div class="logo-drip ld1"></div>
-      <div class="logo-drip ld2"></div>
-      <div class="logo-drip ld3"></div>
-      <div class="logo-drip ld4"></div>
-      <div class="logo-drip ld5"></div>
-      <div class="logo-drip ld6"></div>
-      <div class="logo-drip ld7"></div>
-      <div class="logo-drip ld8"></div>
-      <div class="logo-drip ld9"></div>
-    </div>
+    <div class="band-logo" id="bandLogo">THE<br>DROOLERS</div>
+    <canvas id="gooCanvas"></canvas>
   </div>
-
   <div class="section-divider"></div>
   <div class="ornament">◆ ◆ ◆</div>
   <div class="scroll-hint">▽ &nbsp; Descend &nbsp; ▽</div>
@@ -1203,12 +1123,12 @@
     <li><a href="https://music.apple.com/us/artist/the-droolers/1834197784" target="_blank">Apple Music</a></li>
     <li><a href="https://www.instagram.com/thedroolersmusic/" target="_blank">Instagram</a></li>
     <li><a href="https://www.youtube.com/channel/UCDTbbUC_TBroCxUa_anZlgw" target="_blank">YouTube</a></li>
-    <li><a href="mailto:manager@thedroolers.com">Contact</a></li>
+    <li><a href="/cdn-cgi/l/email-protection#1f727e717e787a6d5f6b777a7b6d7070737a6d6c317c7072">Contact</a></li>
   </ul>
   <div class="footer-copy">© 2026 The Droolers · All rights reserved · Powered by Brown's Botanicals</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
   /* ---- Hamburger ---- */
   function toggleMenu() {
@@ -1287,9 +1207,144 @@
   }
 
   window.addEventListener('scroll', updateActiveNav);
-  buildRingDiamonds();
   buildWaveforms();
   updateActiveNav();
+
+  /* ---- CANVAS GOO — identical rendering on all browsers & devices ----
+     Replicates the SVG goo-filter look (blobs merging into letter bottoms)
+     using Canvas 2D, which is fully consistent on mobile Safari / Android.
+
+     Technique:
+       Each blob is drawn as a filled circle with a radial gradient.
+       A short tapered connector rect runs from the letter baseline down
+       to the blob centre, so blobs look like they are still attached.
+       Off-screen canvas is blurred with ctx.filter then alpha-thresholded
+       via a second pass — this is the pure-canvas equivalent of the SVG
+       feGaussianBlur + feColorMatrix goo trick, and works on every device.
+  ---- */
+  (function () {
+    var canvas  = document.getElementById('gooCanvas');
+    var logo    = document.getElementById('bandLogo');
+    if (!canvas || !logo) return;
+
+    /* We composite onto an offscreen canvas first so we can apply
+       the blur+threshold trick without touching the main canvas state */
+    var off = document.createElement('canvas');
+    var octx = off.getContext('2d');
+    var ctx  = canvas.getContext('2d');
+
+    var W, H, dpr;
+
+    function resize() {
+      dpr = window.devicePixelRatio || 1;
+      W   = logo.offsetWidth;
+      /* Canvas height = 28% of logo width — enough room for blobs + connectors */
+      H   = Math.round(W * 0.28);
+
+      canvas.width  = W * dpr;
+      canvas.height = H * dpr;
+      canvas.style.width  = W + 'px';
+      canvas.style.height = H + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      off.width  = W * dpr;
+      off.height = H * dpr;
+      octx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    /*
+      Each blob: x position (fraction of W), phase offset, speed,
+      max drop distance (fraction of H), blob radius (fraction of W).
+      Blobs are smaller than the previous version — r values reduced ~30%.
+    */
+    var blobs = [
+      { x:0.05, ph:0.00, sp:0.32, drop:0.62, r:0.028 },
+      { x:0.14, ph:1.90, sp:0.22, drop:0.45, r:0.019 },
+      { x:0.24, ph:0.80, sp:0.38, drop:0.70, r:0.033 },
+      { x:0.34, ph:2.70, sp:0.18, drop:0.40, r:0.016 },
+      { x:0.44, ph:0.45, sp:0.34, drop:0.65, r:0.030 },
+      { x:0.55, ph:1.55, sp:0.24, drop:0.48, r:0.022 },
+      { x:0.65, ph:3.10, sp:0.40, drop:0.72, r:0.036 },
+      { x:0.75, ph:0.25, sp:0.20, drop:0.42, r:0.018 },
+      { x:0.86, ph:2.20, sp:0.30, drop:0.55, r:0.026 }
+    ];
+
+    var t = 0;
+
+    function drawBlobs() {
+      octx.clearRect(0, 0, W, H);
+
+      blobs.forEach(function (b) {
+        var pulse = (Math.sin(t * b.sp + b.ph) + 1) / 2;   /* 0 → 1 → 0 */
+        var bx    = b.x * W;
+        var by    = b.drop * H * pulse;
+        var r     = b.r * W;
+        /* Blob stretches taller when low, squishes when retracted */
+        var rx    = r * (1 - pulse * 0.20);
+        var ry    = r * (1 + pulse * 0.35);
+        var alpha = 0.70 + pulse * 0.30;   /* always quite opaque — goo is thick */
+
+        /* Short tapered connector from top of canvas to blob */
+        var sw = rx * 0.80;
+        octx.beginPath();
+        octx.moveTo(bx - sw * 0.5,                    0);
+        octx.lineTo(bx + sw * 0.5,                    0);
+        octx.lineTo(bx + sw * 0.5 * (1 + pulse * 0.6), by);
+        octx.lineTo(bx - sw * 0.5 * (1 + pulse * 0.6), by);
+        octx.closePath();
+        octx.fillStyle = 'rgba(212,160,23,' + alpha.toFixed(2) + ')';
+        octx.fill();
+
+        /* Blob ellipse */
+        var grad = octx.createRadialGradient(bx, by, 0, bx, by, Math.max(rx,ry));
+        grad.addColorStop(0,   'rgba(228,172,32,' + alpha.toFixed(2) + ')');
+        grad.addColorStop(0.6, 'rgba(196,84,26,'  + (alpha*0.9).toFixed(2) + ')');
+        grad.addColorStop(1,   'rgba(212,160,23,0)');
+        octx.beginPath();
+        octx.ellipse(bx, by, rx, ry, 0, 0, Math.PI * 2);
+        octx.fillStyle = grad;
+        octx.fill();
+
+        /* Nub at very top where goo meets letter */
+        octx.beginPath();
+        octx.ellipse(bx, 1, rx * 1.4, rx * 0.55, 0, 0, Math.PI * 2);
+        octx.fillStyle = 'rgba(212,160,23,' + (alpha * 0.85).toFixed(2) + ')';
+        octx.fill();
+      });
+    }
+
+    function applyGoo() {
+      /* Step 1: blur the offscreen canvas */
+      var blurPx = Math.max(1, Math.round(W * 0.012));
+      ctx.clearRect(0, 0, W, H);
+      ctx.filter = 'blur(' + blurPx + 'px)';
+      ctx.drawImage(off, 0, 0, W, H);
+      ctx.filter = 'none';
+
+      /* Step 2: alpha threshold — pixels with alpha > ~40% snap to full,
+         the rest vanish. This creates the merged-goo look without SVG filters. */
+      var id  = ctx.getImageData(0, 0, W * dpr, H * dpr);
+      var d   = id.data;
+      var len = d.length;
+      var threshold = 100; /* 0-255; higher = tighter merge, lower = softer halos */
+      for (var i = 3; i < len; i += 4) {
+        d[i] = d[i] < threshold ? 0 : Math.min(255, d[i] * 2.5);
+      }
+      ctx.putImageData(id, 0, 0);
+    }
+
+    function frame() {
+      drawBlobs();
+      applyGoo();
+      t += 0.012;
+      requestAnimationFrame(frame);
+    }
+
+    frame();
+  })();
+
 </script>
 </body>
 </html>
