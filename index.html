@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Droolers</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Special+Elite&family=Caesar+Dressing&family=Permanent+Marker&family=Saira+Stencil+One&family=Jolly+Lodger&family=Bungee+Shade&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Knewave&family=Special+Elite&family=Caesar+Dressing&family=Permanent+Marker&family=Saira+Stencil+One&family=Jolly+Lodger&family=Bungee+Shade&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
 <style>
   :root {
     --burnt-orange: #C4541A;
@@ -105,104 +105,6 @@
     padding-top: 0;
   }
 
-  /* Concentric rings */
-  #home::before {
-    content: '';
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    width: 900px; height: 900px;
-    border-radius: 50%;
-    background: transparent;
-    box-shadow:
-      0 0 0 1px rgba(155,114,207,0.1),
-      0 0 0 80px rgba(155,114,207,0.04),
-      0 0 0 160px rgba(155,114,207,0.03),
-      0 0 0 240px rgba(155,114,207,0.02),
-      0 0 0 320px rgba(155,114,207,0.015),
-      0 0 0 400px rgba(155,114,207,0.01);
-    pointer-events: none;
-    animation: pulse-rings 6s ease-in-out infinite;
-  }
-
-  @keyframes pulse-rings {
-    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-    50% { transform: translate(-50%, -50%) scale(1.05); opacity: 1; }
-  }
-
-  .band-photo-container {
-    position: relative;
-    width: clamp(260px, 42vw, 380px);
-    height: clamp(260px, 42vw, 380px);
-    margin-bottom: 3.5rem;
-    flex-shrink: 0;
-    /* No overflow:hidden here — ring must be visible */
-  }
-
-  /* Photo circle fills container exactly */
-  .band-photo-placeholder {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    overflow: hidden;
-    background: 
-      radial-gradient(ellipse at 30% 40%, rgba(196,84,26,0.6) 0%, transparent 50%),
-      radial-gradient(ellipse at 70% 60%, rgba(155,114,207,0.5) 0%, transparent 50%),
-      radial-gradient(ellipse at 50% 80%, rgba(42,107,114,0.6) 0%, transparent 40%),
-      linear-gradient(135deg, #1A0A1E 0%, #2A0A2E 50%, #0F1A0A 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .band-photo-placeholder::after {
-    content: '☽ ☀ ☾';
-    font-size: 2.5rem;
-    letter-spacing: 0.8rem;
-    opacity: 0.3;
-    color: var(--mustard);
-  }
-
-  /* Any real <img> placed inside also clips to circle */
-  .band-photo-placeholder img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Ring sits exactly on top of photo edges — no gap */
-  .band-photo-ring {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    border: 2px solid var(--mustard);
-    box-shadow:
-      0 0 30px rgba(212,160,23,0.4),
-      inset 0 0 20px rgba(212,160,23,0.08);
-    animation: spin-slow 30s linear infinite;
-    pointer-events: none;
-  }
-
-  /* Remove old ::before text-based diamonds — JS places them properly */
-  .band-photo-ring::before { display: none; }
-
-  /* JS-placed diamond dots on ring */
-  .ring-diamond {
-    position: absolute;
-    width: 7px;
-    height: 7px;
-    background: var(--mustard);
-    transform: translate(-50%, -50%) rotate(45deg);
-    box-shadow: 0 0 6px rgba(212,160,23,0.8);
-    pointer-events: none;
-  }
-
-  @keyframes spin-slow {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-
   .band-logo {
     font-family: 'Permanent Marker', serif;
     font-size: clamp(3rem, 8vw, 7rem);
@@ -214,7 +116,79 @@
       0 0 60px rgba(212,160,23,0.4),
       0 0 120px rgba(212,160,23,0.2);
     animation: flicker 8s ease-in-out infinite;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
+    position: relative;
+    z-index: 2;
+  }
+
+  /* ===== GOO DRIP UNIT ===== */
+  /* Wraps logo + drip panel so they share a single goo filter context */
+  .logo-drip-unit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* goo filter applied to whole unit so blobs merge with letter bottoms */
+    filter: url(#logo-goo);
+    margin-bottom: 2.5rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* The drip panel sits directly below the logo, same width */
+  .logo-drip-panel {
+    position: relative;
+    width: clamp(220px, 50vw, 520px);
+    height: clamp(60px, 8vw, 110px);
+    overflow: visible;
+    /* Needs a visible background so goo filter has something to work with */
+    background: transparent;
+  }
+
+  /* Each drip strand */
+  .logo-drip {
+    position: absolute;
+    top: 0;
+    border-radius: 0 0 40% 40%;
+    background: var(--mustard);
+    transform-origin: top center;
+    animation: logo-drip-fall ease-in-out infinite;
+  }
+
+  /* Teardrop bulge at the tip of each drip */
+  .logo-drip::after {
+    content: '';
+    position: absolute;
+    bottom: -45%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 200%;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: inherit;
+  }
+
+  /* 9 drips spread across the logo width, varied timing & size */
+  .ld1  { left:  4%; width: 4.5%; animation-duration: 3.4s; animation-delay: 0.0s; }
+  .ld2  { left: 13%; width: 3.0%; animation-duration: 4.8s; animation-delay: 1.3s; }
+  .ld3  { left: 22%; width: 5.5%; animation-duration: 3.1s; animation-delay: 0.6s; }
+  .ld4  { left: 32%; width: 2.8%; animation-duration: 5.2s; animation-delay: 2.1s; }
+  .ld5  { left: 42%; width: 4.0%; animation-duration: 3.7s; animation-delay: 0.9s; }
+  .ld6  { left: 53%; width: 3.5%; animation-duration: 4.3s; animation-delay: 1.7s; }
+  .ld7  { left: 63%; width: 5.0%; animation-duration: 3.0s; animation-delay: 0.3s; }
+  .ld8  { left: 74%; width: 2.5%; animation-duration: 4.6s; animation-delay: 2.5s; }
+  .ld9  { left: 84%; width: 3.8%; animation-duration: 3.9s; animation-delay: 1.1s; }
+
+  @keyframes logo-drip-fall {
+    /* Drip stretches down from 0, bulges at tip, falls and fades */
+    0%   { height: 5%;  opacity: 0.9; }
+    20%  { height: 35%; opacity: 1;   }
+    55%  { height: 70%; opacity: 1;   }
+    85%  { height: 90%; opacity: 0.7; }
+    100% { height: 5%;  opacity: 0;   }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-drip { animation: none; height: 40%; opacity: 0.3; }
   }
 
   @keyframes flicker {
@@ -334,7 +308,7 @@
   }
 
   .track-title {
-    font-family: 'Uncial Antiqua', serif;
+    font-family: 'Knewave', serif;
     font-size: 1.2rem;
     color: var(--warm-cream);
     margin-bottom: 0.3rem;
@@ -498,7 +472,7 @@
   }
 
   .show-info .venue {
-    font-family: 'Uncial Antiqua', serif;
+    font-family: 'Knewave', serif;
     font-size: 1.1rem;
     color: var(--warm-cream);
     margin-bottom: 0.2rem;
@@ -644,7 +618,7 @@
   }
 
   .member-name {
-    font-family: 'Uncial Antiqua', serif;
+    font-family: 'Knewave', serif;
     font-size: 0.9rem;
     color: var(--warm-cream);
     margin-bottom: 0.2rem;
@@ -876,7 +850,7 @@
   }
   .mobile-menu.open { display: flex; }
   .mobile-menu-logo {
-    font-family: 'Uncial Antiqua', serif;
+    font-family: 'Knewave', serif;
     font-size: 0.85rem;
     color: var(--mustard);
     letter-spacing: 0.4em;
@@ -984,19 +958,42 @@
   <a href="#media" onclick="closeMenu()">Media</a>
 </div>
 
+<!-- SVG goo filter — blurs then thresholds alpha so blobs merge organically -->
+<svg style="position:absolute;width:0;height:0;overflow:hidden;" aria-hidden="true">
+  <defs>
+    <filter id="logo-goo" x="-20%" y="-20%" width="140%" height="160%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" mode="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 28 -10" result="goo"/>
+      <feComposite in="SourceGraphic" in2="goo" operator="atop"/>
+    </filter>
+  </defs>
+</svg>
+
 <!-- ===== HOME ===== -->
 <section id="home">
-  <div class="band-photo-container">
-    <div class="band-photo-placeholder"></div>
-    <div class="band-photo-ring"></div>
+
+  <!-- Logo + drip panel share one goo filter so drips merge into letter bottoms -->
+  <div class="logo-drip-unit">
+    <div class="band-logo">THE<br>DROOLERS</div>
+    <div class="logo-drip-panel">
+      <div class="logo-drip ld1"></div>
+      <div class="logo-drip ld2"></div>
+      <div class="logo-drip ld3"></div>
+      <div class="logo-drip ld4"></div>
+      <div class="logo-drip ld5"></div>
+      <div class="logo-drip ld6"></div>
+      <div class="logo-drip ld7"></div>
+      <div class="logo-drip ld8"></div>
+      <div class="logo-drip ld9"></div>
+    </div>
   </div>
 
-  <div class="band-logo">THE<br>DROOLERS</div>
-
   <div class="section-divider"></div>
-
   <div class="ornament">◆ ◆ ◆</div>
-
   <div class="scroll-hint">▽ &nbsp; Descend &nbsp; ▽</div>
 </section>
 
@@ -1165,15 +1162,27 @@
   <div class="media-masonry" id="mediaGrid">
 
   <div class="media-item">
-    <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_roses.PNG" alt="Drool" style="width:90%;display:block;object-fit:cover;">
+    <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_roses.PNG" alt="Drool" style="width:100%;display:block;object-fit:cover;">
     <div class="media-overlay">View</div>
-    <div class="media-caption">Stay Drooly, 2025</div>
+    <div class="media-caption">Drool N' Roses, 2025</div>
   </div>
     
   <div class="media-item">
     <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_sticker.jpeg" alt="Drool" style="width:100%;display:block;object-fit:cover;">
     <div class="media-overlay">View</div>
     <div class="media-caption">Get Stuck, 2025</div>
+  </div>
+    
+  <div class="media-item">
+    <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_concept.jpeg" alt="Drool" style="width:100%;display:block;object-fit:cover;">
+    <div class="media-overlay">View</div>
+    <div class="media-caption">Concept Art 2, 2025</div>
+  </div>
+
+  <div class="media-item">
+    <img src="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_drier.jpg" alt="Drool" style="width:100%;display:block;object-fit:cover;">
+    <div class="media-overlay">View</div>
+    <div class="media-caption">Tavern, 2025</div>
   </div>
 
   
@@ -1190,13 +1199,13 @@
 <footer>
   <div class="footer-logo">The Droolers</div>
   <ul class="footer-links">
-    <li><a href="https://open.spotify.com" target="_blank">Spotify</a></li>
-    <li><a href="https://music.apple.com" target="_blank">Apple Music</a></li>
-    <li><a href="#" target="_blank">Instagram</a></li>
+    <li><a href="https://open.spotify.com/artist/31Az6lCGt9dNpZ7WgCM3AA?si=YfWuymdpQyuX6_EkWx7SQg" target="_blank">Spotify</a></li>
+    <li><a href="https://music.apple.com/us/artist/the-droolers/1834197784" target="_blank">Apple Music</a></li>
+    <li><a href="https://www.instagram.com/thedroolersmusic/" target="_blank">Instagram</a></li>
     <li><a href="https://www.youtube.com/channel/UCDTbbUC_TBroCxUa_anZlgw" target="_blank">YouTube</a></li>
-    <li><a href="/cdn-cgi/l/email-protection#a8c5c9c6c9cfcddae8dedcc0cdccdac7c7c4cddadb86cbc7c5">Contact</a></li>
+    <li><a href="mailto:manager@thedroolers.com">Contact</a></li>
   </ul>
-  <div class="footer-copy">© 2026 The Droolers · All rights reserved · Born to drool</div>
+  <div class="footer-copy">© 2026 The Droolers · All rights reserved · Powered by Brown's Botanicals</div>
 </footer>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
