@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Droolers</title>
+<link rel="icon" href="https://pub-bace216b90f24429a9392874cc3939cb.r2.dev/drool_favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Uncial+Antiqua&family=Knewave&family=Special+Elite&family=Caesar+Dressing&family=Permanent+Marker&family=Saira+Stencil+One&family=Jolly+Lodger&family=Bungee+Shade&family=Josefin+Sans:wght@100;300&display=swap" rel="stylesheet">
 <style>
@@ -106,11 +107,11 @@
   }
 
   .band-logo {
-    font-family: 'Permanent Marker', serif;
+    font-family: 'Jolly Lodger', serif;
     font-size: clamp(3rem, 8vw, 7rem);
     color: var(--mustard);
     line-height: 0.9;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.29em;
     text-shadow: 
       4px 4px 0 var(--rust),
       0 0 60px rgba(212,160,23,0.4),
@@ -706,7 +707,7 @@
   }
 
   .footer-logo {
-    font-family: 'Abril Fatface', serif;
+    font-family: 'Jolly Lodger', serif;
     font-size: 2rem;
     color: var(--mustard);
     text-shadow: 2px 2px 0 var(--rust);
@@ -1049,7 +1050,7 @@
         </div>
         <div class="member-card">
           <div class="member-name">Duane</div>
-          <div class="member-role">Banjo</div>
+          <div class="member-role">Guitar</div>
         </div>
         <div class="member-card">
           <div class="member-name">Goldmode</div>
@@ -1063,7 +1064,7 @@
     </div>
 
     <div class="about-text">
-      <h3>"We play music for those who drool."</h3>
+      <h3>"We play music."</h3>
 
       <p>The Droolers, started as a passion project from Power Castle Productions</p>
 
@@ -1123,12 +1124,12 @@
     <li><a href="https://music.apple.com/us/artist/the-droolers/1834197784" target="_blank">Apple Music</a></li>
     <li><a href="https://www.instagram.com/thedroolersmusic/" target="_blank">Instagram</a></li>
     <li><a href="https://www.youtube.com/channel/UCDTbbUC_TBroCxUa_anZlgw" target="_blank">YouTube</a></li>
-    <li><a href="/cdn-cgi/l/email-protection#1f727e717e787a6d5f6b777a7b6d7070737a6d6c317c7072">Contact</a></li>
+    <li><a href="mailto:manager@thedroolers.com">Contact</a></li>
   </ul>
   <div class="footer-copy">© 2026 The Droolers · All rights reserved · Powered by Brown's Botanicals</div>
 </footer>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
   /* ---- Hamburger ---- */
   function toggleMenu() {
@@ -1209,141 +1210,6 @@
   window.addEventListener('scroll', updateActiveNav);
   buildWaveforms();
   updateActiveNav();
-
-  /* ---- CANVAS GOO — identical rendering on all browsers & devices ----
-     Replicates the SVG goo-filter look (blobs merging into letter bottoms)
-     using Canvas 2D, which is fully consistent on mobile Safari / Android.
-
-     Technique:
-       Each blob is drawn as a filled circle with a radial gradient.
-       A short tapered connector rect runs from the letter baseline down
-       to the blob centre, so blobs look like they are still attached.
-       Off-screen canvas is blurred with ctx.filter then alpha-thresholded
-       via a second pass — this is the pure-canvas equivalent of the SVG
-       feGaussianBlur + feColorMatrix goo trick, and works on every device.
-  ---- */
-  (function () {
-    var canvas  = document.getElementById('gooCanvas');
-    var logo    = document.getElementById('bandLogo');
-    if (!canvas || !logo) return;
-
-    /* We composite onto an offscreen canvas first so we can apply
-       the blur+threshold trick without touching the main canvas state */
-    var off = document.createElement('canvas');
-    var octx = off.getContext('2d');
-    var ctx  = canvas.getContext('2d');
-
-    var W, H, dpr;
-
-    function resize() {
-      dpr = window.devicePixelRatio || 1;
-      W   = logo.offsetWidth;
-      /* Canvas height = 28% of logo width — enough room for blobs + connectors */
-      H   = Math.round(W * 0.28);
-
-      canvas.width  = W * dpr;
-      canvas.height = H * dpr;
-      canvas.style.width  = W + 'px';
-      canvas.style.height = H + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-      off.width  = W * dpr;
-      off.height = H * dpr;
-      octx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-    resize();
-    window.addEventListener('resize', resize);
-
-    /*
-      Each blob: x position (fraction of W), phase offset, speed,
-      max drop distance (fraction of H), blob radius (fraction of W).
-      Blobs are smaller than the previous version — r values reduced ~30%.
-    */
-    var blobs = [
-      { x:0.05, ph:0.00, sp:0.32, drop:0.62, r:0.028 },
-      { x:0.14, ph:1.90, sp:0.22, drop:0.45, r:0.019 },
-      { x:0.24, ph:0.80, sp:0.38, drop:0.70, r:0.033 },
-      { x:0.34, ph:2.70, sp:0.18, drop:0.40, r:0.016 },
-      { x:0.44, ph:0.45, sp:0.34, drop:0.65, r:0.030 },
-      { x:0.55, ph:1.55, sp:0.24, drop:0.48, r:0.022 },
-      { x:0.65, ph:3.10, sp:0.40, drop:0.72, r:0.036 },
-      { x:0.75, ph:0.25, sp:0.20, drop:0.42, r:0.018 },
-      { x:0.86, ph:2.20, sp:0.30, drop:0.55, r:0.026 }
-    ];
-
-    var t = 0;
-
-    function drawBlobs() {
-      octx.clearRect(0, 0, W, H);
-
-      blobs.forEach(function (b) {
-        var pulse = (Math.sin(t * b.sp + b.ph) + 1) / 2;   /* 0 → 1 → 0 */
-        var bx    = b.x * W;
-        var by    = b.drop * H * pulse;
-        var r     = b.r * W;
-        /* Blob stretches taller when low, squishes when retracted */
-        var rx    = r * (1 - pulse * 0.20);
-        var ry    = r * (1 + pulse * 0.35);
-        var alpha = 0.70 + pulse * 0.30;   /* always quite opaque — goo is thick */
-
-        /* Short tapered connector from top of canvas to blob */
-        var sw = rx * 0.80;
-        octx.beginPath();
-        octx.moveTo(bx - sw * 0.5,                    0);
-        octx.lineTo(bx + sw * 0.5,                    0);
-        octx.lineTo(bx + sw * 0.5 * (1 + pulse * 0.6), by);
-        octx.lineTo(bx - sw * 0.5 * (1 + pulse * 0.6), by);
-        octx.closePath();
-        octx.fillStyle = 'rgba(212,160,23,' + alpha.toFixed(2) + ')';
-        octx.fill();
-
-        /* Blob ellipse */
-        var grad = octx.createRadialGradient(bx, by, 0, bx, by, Math.max(rx,ry));
-        grad.addColorStop(0,   'rgba(228,172,32,' + alpha.toFixed(2) + ')');
-        grad.addColorStop(0.6, 'rgba(196,84,26,'  + (alpha*0.9).toFixed(2) + ')');
-        grad.addColorStop(1,   'rgba(212,160,23,0)');
-        octx.beginPath();
-        octx.ellipse(bx, by, rx, ry, 0, 0, Math.PI * 2);
-        octx.fillStyle = grad;
-        octx.fill();
-
-        /* Nub at very top where goo meets letter */
-        octx.beginPath();
-        octx.ellipse(bx, 1, rx * 1.4, rx * 0.55, 0, 0, Math.PI * 2);
-        octx.fillStyle = 'rgba(212,160,23,' + (alpha * 0.85).toFixed(2) + ')';
-        octx.fill();
-      });
-    }
-
-    function applyGoo() {
-      /* Step 1: blur the offscreen canvas */
-      var blurPx = Math.max(1, Math.round(W * 0.012));
-      ctx.clearRect(0, 0, W, H);
-      ctx.filter = 'blur(' + blurPx + 'px)';
-      ctx.drawImage(off, 0, 0, W, H);
-      ctx.filter = 'none';
-
-      /* Step 2: alpha threshold — pixels with alpha > ~40% snap to full,
-         the rest vanish. This creates the merged-goo look without SVG filters. */
-      var id  = ctx.getImageData(0, 0, W * dpr, H * dpr);
-      var d   = id.data;
-      var len = d.length;
-      var threshold = 100; /* 0-255; higher = tighter merge, lower = softer halos */
-      for (var i = 3; i < len; i += 4) {
-        d[i] = d[i] < threshold ? 0 : Math.min(255, d[i] * 2.5);
-      }
-      ctx.putImageData(id, 0, 0);
-    }
-
-    function frame() {
-      drawBlobs();
-      applyGoo();
-      t += 0.012;
-      requestAnimationFrame(frame);
-    }
-
-    frame();
-  })();
 
 </script>
 </body>
